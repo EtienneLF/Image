@@ -12,7 +12,13 @@ public class Image {
     }
 
     public void createImage() {
-        System.out.println("Creating image");
+        //Creation palette de toute les images
+        Palette.Analyse(folderPath);
+
+        //Analyse de l'image
+        Analyse.analyseImage(imagePath);
+
+        //Creation de l'image finale
     }
 
     public String getImagePath() {
