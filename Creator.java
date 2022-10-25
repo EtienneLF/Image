@@ -1,5 +1,3 @@
-
-
 import java.util.logging.Logger;
 
 import Source.Image;
@@ -10,6 +8,7 @@ public class Creator {
         Logger logger = Logger.getLogger("Creator");
         String folderPath = "Entry/Folder";
         String imagePath = "Entry/Test.png";
+        //imagePath = "Entry/Folder/Blue.png";
         String resultPath = "Exit/Result.png";
 
         System.out.println("--------------------------------------------------------------");

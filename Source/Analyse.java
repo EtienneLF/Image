@@ -3,7 +3,7 @@ package Source;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.System.Logger;
+import java.util.logging.Logger;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -12,13 +12,13 @@ import javax.imageio.ImageIO;
 public class Analyse {
 
     public static void analyseImage(String path) {
-        Logger logger = System.getLogger("Analyse");
-        logger.log(System.Logger.Level.INFO, "Starting analyse of image : " + path);
+        Logger logger = Logger.getLogger("Analyse");
+        logger.info("Starting analyse of image : " + path);
         BufferedImage image;
         try {
             image = ImageIO.read(new File(path));
         } catch (IOException e) {
-            logger.log(System.Logger.Level.ERROR, "Error while reading image : " + path);
+            logger.severe("Error while reading image : " + path);
             e.printStackTrace();
             return;
         }
@@ -52,6 +52,8 @@ public class Analyse {
     }
 
     public static void score(int[][][] img) {
+        // System.out.println("img : " + img[0][0][0] + " " + img[0][0][1] + " " +
+        // img[0][0][2]);
         int[] mean = mean(img);
 
         System.out.println("Mean: " + mean[0] + " " + mean[1] + " " + mean[2]);
@@ -64,7 +66,8 @@ public class Analyse {
         result.put("purple", mean[0] + mean[2]);
         result.put("cyan", mean[1] + mean[2]);
         result.put("white", mean[0] + mean[1] + mean[2]);
-        
+        result.put("black", (255 - mean[0]) + (255 - mean[1]) + (255 - mean[2]));
+
         System.out.println("Result Score : " + result);
     }
 
@@ -81,9 +84,12 @@ public class Analyse {
             }
         }
 
-        result[0] = result[0] % 255;
-        result[1] = result[1] % 255;
-        result[2] = result[2] % 255;
+        // System.out.println("Result Mean : " + result[0] + " " + result[1] + " " +
+        // result[2]);
+
+        result[0] = result[0] / (width * height);
+        result[1] = result[1] / (width * height);
+        result[2] = result[2] / (width * height);
 
         return result;
     }
