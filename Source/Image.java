@@ -1,5 +1,8 @@
 package Source;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+
 public class Image {
     private String imagePath;
     private String folderPath;
@@ -12,36 +15,15 @@ public class Image {
     }
 
     public void createImage() {
-        //Creation palette de toute les images
-        Palette.Analyse(folderPath);
+        // Creation palette de toute les images
+        ArrayList<Dictionary<String, Integer>> paletteDictionary = Palette.Analyse(folderPath);
+        //System.out.println(paletteDictionary);
 
-        //Analyse de l'image
-        Analyse.analyseImage(imagePath);
+        // Analyse de l'image
+        ArrayList<Dictionary<String, Integer>> imageDictionary = Analyse.analysePixel(imagePath);
+        //System.out.println(imageDictionary);
 
-        //Creation de l'image finale
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getFolderPath() {
-        return folderPath;
-    }
-
-    public void setFolderPath(String folderPath) {
-        this.folderPath = folderPath;
-    }
-
-    public String getResultPath() {
-        return resultPath;
-    }
-
-    public void setResultPath(String resultPath) {
-        this.resultPath = resultPath;
+        // Creation de l'image finale
+        Creation.imageCreation(resultPath, imageDictionary, paletteDictionary, imagePath);
     }
 }

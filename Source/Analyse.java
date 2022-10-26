@@ -4,14 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
 import javax.imageio.ImageIO;
 
 public class Analyse {
 
-    public static void analyseImage(String path) {
+    public static Dictionary<String, Integer> analyseImage(String path) {
         Logger logger = Logger.getLogger("Analyse");
         logger.info("Starting analyse of image : " + path);
         BufferedImage image;
@@ -20,13 +20,29 @@ public class Analyse {
         } catch (IOException e) {
             logger.severe("Error while reading image : " + path);
             e.printStackTrace();
-            return;
+            return null;
         }
 
         int[][][] img = getTripleArray(image);
 
-        score(img);
+        return score(img);
+    }
 
+    public static ArrayList<Dictionary<String, Integer>> analysePixel(String path) {
+        Logger logger = Logger.getLogger("Analyse");
+        logger.info("Starting analyse of image : " + path);
+        BufferedImage image;
+        try {
+            image = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            logger.severe("Error while reading image : " + path);
+            e.printStackTrace();
+            return null;
+        }
+
+        int[][][] img = getTripleArray(image);
+
+        return scorePixel(img);
     }
 
     public static int[][][] getTripleArray(BufferedImage image) {
@@ -51,7 +67,7 @@ public class Analyse {
         return result;
     }
 
-    public static void score(int[][][] img) {
+    public static Dictionary<String, Integer> score(int[][][] img) {
         // System.out.println("img : " + img[0][0][0] + " " + img[0][0][1] + " " +
         // img[0][0][2]);
         int[] mean = mean(img);
@@ -68,7 +84,30 @@ public class Analyse {
         result.put("white", mean[0] + mean[1] + mean[2]);
         result.put("black", (255 - mean[0]) + (255 - mean[1]) + (255 - mean[2]));
 
-        System.out.println("Result Score : " + result);
+        //System.out.println("Result Score : " + result);
+        return result;
+    }
+
+    public static ArrayList<Dictionary<String, Integer>> scorePixel(int[][][] img) {
+        // System.out.println("img : " + img[0][0][0] + " " + img[0][0][1] + " " +
+        // img[0][0][2]);
+        ArrayList<Dictionary<String, Integer>> result = new ArrayList<>();
+        for (int y = 0; y < img[0].length; y++) {
+            for (int x = 0; x < img.length; x++) {
+                Dictionary<String, Integer> pixel = new Hashtable<>();
+                pixel.put("red", img[x][y][0]);
+                pixel.put("green", img[x][y][1]);
+                pixel.put("blue", img[x][y][2]);
+                pixel.put("yellow", img[x][y][0] + img[x][y][1]);
+                pixel.put("purple", img[x][y][0] + img[x][y][2]);
+                pixel.put("cyan", img[x][y][1] + img[x][y][2]);
+                pixel.put("white", img[x][y][0] + img[x][y][1] + img[x][y][2]);
+                pixel.put("black", (255 - img[x][y][0]) + (255 - img[x][y][1]) + (255 - img[x][y][2]));
+                result.add(pixel);
+            }
+        }
+        //System.out.println("Result Score : " + result);
+        return result;
     }
 
     public static int[] mean(int[][][] img) {

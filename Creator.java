@@ -7,9 +7,9 @@ public class Creator {
     public static void main(String[] args) {
         Logger logger = Logger.getLogger("Creator");
         String folderPath = "Entry/Folder";
-        String imagePath = "Entry/Test.png";
-        //imagePath = "Entry/Folder/Blue.png";
-        String resultPath = "Exit/Result.png";
+        String imagePath = "Entry/cascade.jpg";
+        // imagePath = "Entry/Folder/Blue.png";
+        String resultPath = "Exit/cascade";
 
         System.out.println("--------------------------------------------------------------");
 
